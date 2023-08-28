@@ -1,0 +1,15 @@
+id: flow.openapi-listener.DefaultAPIFlow
+data:
+  name: DefaultAPIFlow
+  metadata:
+    input:
+      - name: in
+        type: string
+  tasks:
+    - id: log_message
+      name: Log Message
+      activity:
+        ref: log_message
+        input:
+          message: Log from default API handler at openapi-listener.DefaultAPIFlow
+          addDetails: false

@@ -1,0 +1,25 @@
+- description: Get list of users
+  endpoint: /user
+  id: 0
+  method: GET
+  operationId: getUsersList
+- description: Create New User.
+  endpoint: /user
+  id: 1
+  method: POST
+  operationId: createUser
+- description: Delete user
+  endpoint: /user/{username}
+  id: 2
+  method: DELETE
+  operationId: deleteUser
+- description: Get user details
+  endpoint: /user/{username}
+  id: 3
+  method: GET
+  operationId: getUserDetails
+- description: Update user details
+  endpoint: /user/{username}
+  id: 4
+  method: PUT
+  operationId: updateUserDetails

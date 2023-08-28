@@ -1,0 +1,99 @@
+baseClasses:
+- application/json
+baseName: openapi_listener
+category: Restful Listener for userApi
+description: Get list of users The API Path is GET /user
+icon: apiserver.svg
+inputs:
+- description: The connection name defined in the profile.yaml file
+  label: Connection settings
+  name: connection
+  optional: true
+  type: string
+label: Get list of users
+name: userApi_server_getUsersList
+outputs:
+- baseClasses:
+  - application/json
+  - Tool
+  - Embeddings
+  - string
+  label: Request Parameters
+  name: paramList
+  params:
+  - description: An RFC4122 UID used as a transaction id.
+    label: headers.x-transaction-id
+    name: headers.x-transaction-id
+    type: string
+  type: ""
+replys:
+- baseClasses:
+  - application/json; charset=utf-8
+  - UserList
+  label: 'HTTP: 200, UserList'
+  name: Results
+  params:
+  - label: status
+    name: status
+    optional: true
+    type: number
+  - label: data
+    name: data
+    optional: true
+    type: application/json
+  - label: headers
+    name: headers
+    optional: true
+    type: application/json
+  - label: cookies
+    name: cookies
+    optional: true
+    type: application/json
+  type: ""
+- baseClasses:
+  - application/json; charset=utf-8
+  - ErrorResponse
+  label: 'HTTP: 400, ErrorResponse'
+  name: Results
+  params:
+  - label: status
+    name: status
+    optional: true
+    type: number
+  - label: data
+    name: data
+    optional: true
+    type: application/json
+  - label: headers
+    name: headers
+    optional: true
+    type: application/json
+  - label: cookies
+    name: cookies
+    optional: true
+    type: application/json
+  type: ""
+- baseClasses:
+  - application/json; charset=utf-8
+  - ErrorResponse
+  label: 'HTTP: default, ErrorResponse'
+  name: Results
+  params:
+  - label: status
+    name: status
+    optional: true
+    type: number
+  - label: data
+    name: data
+    optional: true
+    type: application/json
+  - label: headers
+    name: headers
+    optional: true
+    type: application/json
+  - label: cookies
+    name: cookies
+    optional: true
+    type: application/json
+  type: ""
+type: trigger

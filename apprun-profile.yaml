@@ -1,0 +1,32 @@
+db_action:
+- charset: utf8mb4
+  dbType: mysql
+  dbname: demo
+  disablePrepared: false
+  host: 192.168.86.58
+  labeledResults: false
+  maxIdleConnections: 5
+  password: root
+  port: 3306
+  profileName: dbServer1
+  sqlPath: ./sql
+  threads: 100
+  username: root
+openapi_listener:
+- apiShortName: userApi
+  apiURLPrefix: /api/v1
+  defaultContentType: application/json
+  defaultErrorTempName: error.json
+  defaultFlowURI: res://flow.openapi-listener.DefaultAPIFlow
+  disableCors: false
+  enableTLS: false
+  errorTemplatePath: ./system/errors
+  host: 0.0.0.0
+  mockResponse: true
+  nodePath: ./api
+  port: 9998
+  profileName: apiServer1
+  spec: ./api/user-openapi.yaml
+  validateRequest: true
+  validateServer: false
+  watch: false

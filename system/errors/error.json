@@ -1,0 +1,5 @@
+{
+    "cause": "{{.Cause}}",
+    "code": {{.ErrCode}},
+    "error": "{{.Detail}}"
+}

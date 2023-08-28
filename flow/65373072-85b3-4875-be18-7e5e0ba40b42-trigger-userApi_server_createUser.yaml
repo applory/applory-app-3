@@ -1,0 +1,37 @@
+data:
+  links:
+  - from: db_action_0
+    to: action_reply_0
+    type: default
+  name: userApi_server_createUser_0
+  tasks:
+  - activity:
+      input:
+        params:
+          mapping:
+            age: =$.content.age
+            firstName: =$.content.firstName
+            id: =$.content.id
+            lastName: =$.content.lastName
+            password: =$.content.password
+            username: =$.content.username
+        sqlId: userdb.users_test.insertUsersTest
+      ref: db_action
+      settings:
+        connection: db_action.dbServer1
+    id: db_action_0
+    name: db_action_0
+  - activity:
+      ref: action_reply
+      settings:
+        code: 200
+        data:
+          mapping:
+            content: completed
+            result: "100"
+        headers:
+          mapping:
+            x-transaction-id: =$.headers["X-Transaction-Id"]
+    id: action_reply_0
+    name: action_reply_0
+id: flow.userApi_server_createUser

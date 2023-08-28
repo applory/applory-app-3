@@ -1,0 +1,268 @@
+openapi: 3.0.3
+info:
+  title: User Accounts Example
+  description: |-
+    This is a REST API example on managing user accounts.
+  version: 00.01.00
+servers:
+  - url: http://localhost:9998/
+tags:
+  - name: user
+    description: Operations about user
+paths:
+  /user:
+    post:
+      tags:
+        - user
+      summary: Create New User
+      description: Create New User.
+      operationId: createUser
+      parameters:
+        - $ref: "#/components/parameters/x-transaction-id"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+        description: Created user object
+        required: true
+      responses:
+        "200":
+          $ref: "#/components/responses/200Confirmation"
+        "400":
+          $ref: "#/components/responses/400Error"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
+    get:
+      tags:
+        - user
+      summary: Get list of users
+      description: Get list of users
+      operationId: getUsersList
+      parameters:
+        - $ref: "#/components/parameters/x-transaction-id"
+      responses:
+        "200":
+          $ref: "#/components/responses/200UserList"
+        "400":
+          $ref: "#/components/responses/400Error"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
+  /user/{username}:
+    get:
+      tags:
+        - user
+      summary: Get user details
+      description: Get user details
+      operationId: getUserDetails
+      parameters:
+        - $ref: "#/components/parameters/Username"
+        - $ref: "#/components/parameters/x-transaction-id"
+      responses:
+        "200":
+          $ref: "#/components/responses/200UserRecord"
+        "400":
+          $ref: "#/components/responses/400Error"
+        "404":
+          $ref: "#/components/responses/404Error"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
+    put:
+      tags:
+        - user
+      summary: Update user details
+      description: Update user details
+      operationId: updateUserDetails
+      parameters:
+        - $ref: "#/components/parameters/Username"
+        - $ref: "#/components/parameters/x-transaction-id"
+      requestBody:
+        description: Update an existent user in the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        "200":
+          $ref: "#/components/responses/200Confirmation"
+        "404":
+          $ref: "#/components/responses/404Error"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
+    delete:
+      tags:
+        - user
+      summary: Delete user
+      description: Delete user
+      operationId: deleteUser
+      parameters:
+        - $ref: "#/components/parameters/Username"
+        - $ref: "#/components/parameters/x-transaction-id"
+      responses:
+        "200":
+          $ref: "#/components/responses/200Confirmation"
+        "404":
+          $ref: "#/components/responses/404Error"
+        default:
+          $ref: "#/components/responses/UnexpectedError"
+components:
+  parameters:
+    x-transaction-id:
+      description: An RFC4122 UID used as a transaction id.
+      in: header
+      name: x-transaction-id
+      required: false
+      schema:
+        type: string
+    Username:
+      name: username
+      in: path
+      description: The name that needs to be deleted
+      required: true
+      schema:
+        type: string 
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          example: 10
+        username:
+          type: string
+          example: username
+        firstName:
+          type: string
+          example: John
+        lastName:
+          type: string
+          example: Lenon
+        password:
+          type: string
+          writeOnly: true
+          example: password
+          maxLength: 500
+          minLength: 10
+        age:
+          type: integer
+          example: 30
+      required:
+      - username
+      - password     
+    UserList:
+      type: object
+      properties:
+        number_of_users:
+          type: integer
+          readOnly: true
+          example: 4
+        list_of_users:
+          type: array
+          items:
+            type: string
+          example: 
+          - 'John'
+          - 'Paul'
+          - 'George'
+          - 'Ringo'
+    Confirmation:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string    
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+    ErrorResponse:
+      additionalProperties: false
+      description: An array of detail error codes, and messages, and URLs to documentation to help remediation.
+      properties:
+        Code:
+          description: High level textual error code, to help categorize the errors.
+          type: integer
+          format: int32
+        Message:
+          description: Brief Error message, e.g., 'There is something wrong with the request parameters provided'
+          maxLength: 500
+          minLength: 1
+          type: string
+      required:
+        - Code
+        - Message
+      type: object
+  responses:
+    UnexpectedError:
+      description: unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+      headers:
+        x-transaction-id:
+          description: An RFC4122 UID used as a transaction id.
+          schema:
+            type: string
+    NullResponse:
+      description: Null response
+    200UserRecord:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/User"
+      description: The User Record Created
+      headers:
+        x-transaction-id:
+          description: An RFC4122 UID used as a transaction id.
+          schema:
+            type: string
+    200Confirmation:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Confirmation"
+      description: The User List with brief info
+      headers:
+        x-transaction-id:
+          description: An RFC4122 UID used as a transaction id.
+          schema:
+            type: string
+    200UserList:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/UserList"
+      description: The User List with brief info
+      headers:
+        x-transaction-id:
+          description: An RFC4122 UID used as a transaction id.
+          schema:
+            type: string
+    400Error:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+      description: Bad request
+      headers:
+        x-transaction-id:
+          description: An RFC4122 UID used as a transaction id.
+          schema:
+            type: string
+    404Error:
+      description: Not found
+      headers:
+        x-transaction-id:
+          description: An RFC4122 UID used as a transaction id.
+          schema:
+            type: string

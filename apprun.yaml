@@ -1,0 +1,17 @@
+connections:
+- id: db_action.dbServer1
+createdAt: "2023-08-28 02:04:12"
+description: This is an example application for demo purpose
+environ:
+  include: ./system/apprun-environ.yaml
+longName: Example Application
+name: 3-apitest
+productGroup: demo product
+resources:
+- include: system/default-api-flow.yaml
+- include: flow
+triggers:
+- id: openapi_listener.apiServer1
+type: app
+updatedAt: "2023-08-28 02:10:01"
+version: 1.0.0

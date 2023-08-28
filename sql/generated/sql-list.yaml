@@ -1,0 +1,110 @@
+- key: userdb.users_test.insertUsersTest
+  params:
+  - age
+  - firstName
+  - id
+  - lastName
+  - password
+  - username
+  sqlText: |-
+    INSERT INTO users_test (age,first_name,id,last_name,password,username)
+            VALUES(
+            #{age},
+            #{firstName},
+            #{id},
+            #{lastName},
+            #{password},
+            #{username}
+            )
+  sqlType: INSERT
+- key: userdb.users_test.insertBatchUsersTest
+  params:
+  - item.id
+  - item.lastName
+  - item.password
+  - item.username
+  - item.age
+  - item.firstName
+  sqlText: |-
+    INSERT INTO users_test (age,first_name,id,last_name,password,username)
+            VALUES
+            <foreach item="item" index="index" collection="{0}" open="" separator="," close="">
+                (#{item.age},#{item.firstName},#{item.id},#{item.lastName},#{item.password},#{item.username})
+            </foreach>
+  sqlType: INSERT
+- key: userdb.users_test.updateUsersTest
+  params:
+  - lastName
+  - password
+  - username
+  - id
+  - age
+  - firstName
+  sqlText: |-
+    UPDATE users_test
+            <set>
+                <if test="{age} != nil and {age} != 0"> age = #{age} </if>
+                <if test="{firstName} != nil"> first_name = #{firstName} </if>
+                <if test="{lastName} != nil"> last_name = #{lastName} </if>
+                <if test="{password} != nil"> password = #{password} </if>
+                <if test="{username} != nil"> username = #{username} </if>
+            </set>
+            WHERE id = #{id}
+  sqlType: UPDATE
+- key: userdb.users_test.selectUsersTest
+  params:
+  - lastName
+  - password
+  - username
+  - age
+  - firstName
+  - id
+  sqlText: |-
+    SELECT <include refid="columns_id"> </include> FROM users_test
+            <where>
+                <if test="{age} != nil and {age} != 0">AND age = #{age} </if>
+                <if test="{firstName} != nil">AND first_name = #{firstName} </if>
+                <if test="{id} != nil and {id} != 0">AND id = #{id} </if>
+                <if test="{lastName} != nil">AND last_name = #{lastName} </if>
+                <if test="{password} != nil">AND password = #{password} </if>
+                <if test="{username} != nil">AND username = #{username} </if>
+            </where>
+  sqlType: SELECT
+- key: userdb.users_test.selectUsersTestCount
+  params:
+  - id
+  - lastName
+  - password
+  - username
+  - age
+  - firstName
+  sqlText: |-
+    SELECT COUNT(*) FROM users_test
+            <where>
+                <if test="{age} != nil and {age} != 0">AND age = #{age} </if>
+                <if test="{firstName} != nil">AND first_name = #{firstName} </if>
+                <if test="{id} != nil and {id} != 0">AND id = #{id} </if>
+                <if test="{lastName} != nil">AND last_name = #{lastName} </if>
+                <if test="{password} != nil">AND password = #{password} </if>
+                <if test="{username} != nil">AND username = #{username} </if>
+            </where>
+  sqlType: SELECT
+- key: userdb.users_test.deleteUsersTest
+  params:
+  - firstName
+  - id
+  - lastName
+  - password
+  - username
+  - age
+  sqlText: |-
+    DELETE FROM users_test
+            <where>
+                <if test="{age} != nil and {age} != 0">AND age = #{age} </if>
+                <if test="{firstName} != nil">AND first_name = #{firstName} </if>
+                <if test="{id} != nil and {id} != 0">AND id = #{id} </if>
+                <if test="{lastName} != nil">AND last_name = #{lastName} </if>
+                <if test="{password} != nil">AND password = #{password} </if>
+                <if test="{username} != nil">AND username = #{username} </if>
+            </where>
+  sqlType: DELETE
